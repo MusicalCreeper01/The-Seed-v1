@@ -28,7 +28,8 @@ Delete the world file if one has already been created, and start the server. It 
 This area will be updated with when and what each commit added, and what video it's linked to.
 
 * August 8th 2016: Created a simple world generator - Video coming soon - https://github.com/MusicalCreeper01/The-Seed-v1/releases/tag/1.0 - https://github.com/MusicalCreeper01/The-Seed-v1/commit/62368678b1cf6233674161d359b8e995bfa61e48
-* 
+ 
+
 Support
 
 I do this all in my free time, and if you'd like me to be able to continue doing it, I would really appriciate it if you would show your support!

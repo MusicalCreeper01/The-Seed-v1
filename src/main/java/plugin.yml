@@ -1,0 +1,5 @@
+name: seed
+version: 1.0
+author: xNagisa_
+main: info.icodethings.seed.Main
+load: startup

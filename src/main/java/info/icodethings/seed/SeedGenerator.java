@@ -1,5 +1,6 @@
 package info.icodethings.seed;
 
+import jLibNoise.noise.NoiseQuality;
 import javafx.util.Pair;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -7,44 +8,54 @@ import org.bukkit.generator.ChunkGenerator;
 
 import java.util.Random;
 
+import jLibNoise.noise.module.Perlin;
+import jLibNoise.noise.utils.*;
+
 public class SeedGenerator extends ChunkGenerator{
 
     public ChunkData chunkData;
 
-    //Store layer materials
-    public Material[] layers = new Material[]{Material.BEDROCK, Material.STONE, Material.COBBLESTONE, Material.DIRT, Material.GRASS};
-
-    //Array to hold layer height ranges
-    public Pair<Integer, Integer>[] heights = new Pair[]{new Pair(0,0), new Pair(1,200), new Pair(201,220), new Pair(221, 230), new Pair(231, 231)};
-
-
+    /*
+    * Low frequency or there is too much random noise 0.05 - 0.1 is a good range
+    *
+    * */
 
     @Override
     public ChunkData generateChunkData(World world, Random random, int xChunk, int zChunk, BiomeGrid biome){
         chunkData = this.createChunkData(world);
 
+        Perlin myModule = new Perlin();
+
+        myModule.setSeed((int)world.getSeed());
+
+        myModule.setPersistence(0.1); // detail
+        myModule.setOctaveCount(4); // detail passes
+        myModule.setFrequency(0.05);
+        myModule.setLacunarity(0.01);
+
+        myModule.setNoiseQuality(NoiseQuality.QUALITY_BEST);
+
+        int heightscale = 5; //world.getMaxHeight()
+        int base = 10; //blocks before noise is applied
+
+        int xOffset = 16*xChunk;
+        int yOffset = 16*zChunk;
+
         int x;
-        int z;
-        int y;
         for(x = 0; x < 16; ++x){
+            int z;
             for(z = 0; z < 16; ++z){
-               for(y = 0; y < 256; ++y){
-                   setBlock(x, y, z, getMaterialForHeight(y));
-               }
+                double p = (myModule.getValue((xOffset+x)- 0.98, (yOffset+z)- 0.98, .1) + 1) / 2.0 * heightscale;
+                p += base;
+
+                int y;
+                for(y = 0; y < p; ++y){
+                   setBlock(x, y, z, Material.COBBLESTONE);
+                }
             }
         }
 
         return chunkData;
-    }
-
-    public Material getMaterialForHeight(int y){
-        for(int i = 0; i < heights.length; ++i){
-            Pair<Integer, Integer> h = heights[i];
-
-            if(y >= h.getKey() && y <= h.getValue())
-                return layers[i];
-        }
-        return Material.AIR;
     }
 
     public boolean isType(int x, int y, int z, Material material) {
@@ -61,3 +72,39 @@ public class SeedGenerator extends ChunkGenerator{
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

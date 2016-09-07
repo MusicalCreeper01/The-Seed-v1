@@ -4,6 +4,7 @@
     <root id="archive" name="the-seed.jar">
       <element id="module-output" name="The Seed" />
       <element id="file-copy" path="$PROJECT_DIR$/src/main/java/plugin.yml" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/biomes.yml" />
     </root>
   </artifact>
 </component>
